@@ -308,6 +308,7 @@ class Review:
         self.view_state: dict = {}
         self.folder: Optional[Path] = None
         self.warnings: list = []
+        self.import_notes: list = []      # rejected files / consistency notes shown to the user
         self._dirty = False
 
     @property
