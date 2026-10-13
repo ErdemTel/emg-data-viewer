@@ -1,0 +1,30 @@
+# environment / caches
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+.idea/
+.vscode/
+
+# NEVER commit real data, review workspaces or logs
+data/
+recordings/
+reviews/
+*.emgreview/
+manifest.json
+view_state.json
+annotations.csv
+emg.csv
+imu.csv
+contact.csv
+markers.csv
+session.json
+*.log
+
+# credentials
+.config/
+*.token
+.env
