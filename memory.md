@@ -136,3 +136,12 @@ Planned / not done:
   27 / 141 impedance observations; IMU 2,578 / 13,956 rows. No real data committed.
 - NOT done / not verified: manual desktop GUI checks; any real-device acquisition; any
   camera/robot synchronization.
+- Pushed to private GitHub repo https://github.com/ErdemTel/emg-data-viewer (created with
+  `gh repo create --private` under the scoped `ErdemTel` login; commits 3eee55c, 6c2f1c9).
+- Live launch on this machine's desktop (DISPLAY=:0, XWayland): `python -m emg_review` opened the
+  empty welcome screen; verified by an xwd capture of the window (review actions disabled).
+  Interactive mouse/keyboard checks (docs/MANUAL_TESTS.md) handed to the user — results not yet
+  recorded here.
+- Hardening (change found uncommitted in the working tree, kept): `jump_to` refuses annotations
+  that do not match the loaded EMG source; `sys.excepthook` shows unexpected slot errors in a
+  dialog instead of aborting, so unsaved annotations are not lost. `pytest` → 72 passed.

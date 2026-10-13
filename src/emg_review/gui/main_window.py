@@ -3,6 +3,7 @@
 import atexit
 import signal
 import sys
+import traceback
 from pathlib import Path
 
 from PyQt5.QtCore import Qt, QTimer
@@ -769,12 +770,18 @@ class MainWindow(QMainWindow):
         a = self._find(key)
         if a is None:
             return
+        if a.source_sha256 != vm.emg.source.sha256 or not (0 <= a.start_row < a.end_row_exclusive <= vm.emg.n):
+            self.statusBar().showMessage("This annotation does not match the loaded EMG source.", 6000)
+            return
         vm.set_cursor(a.start_row)
-        if a.annotation_type != TYPE_BOOKMARK:
-            vm.set_selection(a.start_row, a.end_row_exclusive)
-            self.plots.zoom_to_rows(a.start_row, a.end_row_exclusive)
-        else:
-            self.plots.ensure_row_visible(a.start_row)
+        try:
+            if a.annotation_type != TYPE_BOOKMARK:
+                vm.set_selection(a.start_row, a.end_row_exclusive)
+                self.plots.zoom_to_rows(a.start_row, a.end_row_exclusive)
+            else:
+                self.plots.ensure_row_visible(a.start_row)
+        except SelectionError as e:
+            self.statusBar().showMessage(str(e), 6000)
 
     def edit_annotation(self, key):
         a = self._find(key) if not key.startswith("marker:") else None
@@ -835,6 +842,19 @@ def run(args) -> int:
     app = QApplication.instance() or QApplication(sys.argv[:1])
     app.setApplicationName(APP_NAME)
     win = MainWindow()
+
+    def excepthook(etype, value, tb):
+        # PyQt5 aborts on unhandled exceptions in slots; report instead so that unsaved
+        # annotations are not lost to a programming error.
+        traceback.print_exception(etype, value, tb)
+        try:
+            win._error("Unexpected error", f"{etype.__name__}: {value}\n\nThe current review is "
+                       "still open; please save your work and report this.",
+                       "".join(traceback.format_exception(etype, value, tb)))
+        except Exception:
+            pass
+
+    sys.excepthook = excepthook
     # remove the temporary work area also on Ctrl+C / SIGTERM (snapshots are copies only)
     atexit.register(win.workarea.cleanup)
     for sig in (signal.SIGINT, signal.SIGTERM):
