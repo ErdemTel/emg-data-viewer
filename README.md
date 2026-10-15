@@ -1,6 +1,6 @@
 # EMG Review
 
-An **import-first, offline** desktop viewer for our 8-channel sEMG research recordings
+A desktop viewer for our 8-channel sEMG research recordings
 (the CSV session folders written by the live recorder `gforce-emg-ui`). It is a separate
 application: no sensor SDK, no Bluetooth, no live acquisition.
 
