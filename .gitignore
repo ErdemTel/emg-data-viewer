@@ -9,22 +9,65 @@ dist/
 .idea/
 .vscode/
 
+# private notes / AI-assistant context (repo is public)
+CLAUDE.md
+CLAUDE.local.md
+memory.md
+MEMORY.md
+.claude/
+
 # NEVER commit real data, review workspaces or logs
 data/
 recordings/
+datasets/
 reviews/
 *.emgreview/
 manifest.json
 view_state.json
 annotations.csv
+*_annotations.csv
 emg.csv
 imu.csv
 contact.csv
 markers.csv
 session.json
+*.csv
+*.tsv
+*.bin
+*.npy
+*.npz
+*.mat
+*.h5
+*.hdf5
+*.parquet
+*.feather
+*.pkl
+*.pickle
+*.edf
+*.bdf
 *.log
+
+# trained models / training runs
+models/
+checkpoints/
+runs/
+wandb/
+mlruns/
+lightning_logs/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.joblib
+*.safetensors
+*.tflite
+*.keras
 
 # credentials
 .config/
-*.token
 .env
+.env.*
+!.env.example
+*.token
+*.pem
+*.key
